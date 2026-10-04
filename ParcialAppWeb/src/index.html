@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flujo HTML y Especificidad CSS - Parcial</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <!-- Elemento de bloque semántico de nivel superior -->
+  <main class="contenedor-principal">
+    
+    <header class="cabecera">
+      <!-- Ejemplo de accesibilidad: aria-label para dar contexto extra si fuera necesario -->
+      <h1 aria-label="Tema del parcial: Especificidad">Demostración de HTML y CSS</h1>
+    </header>
+
+    <section class="ejemplos-flujo">
+      
+      <!-- 
+        El <article> y el <h2> son elementos en BLOQUE. 
+        Este <h2> es el que usaremos para que 5 selectores CSS peleen por él.
+        Tiene etiqueta (h2), clase (.titular-articulo) e ID (#titular-especifico).
+      -->
+      <article class="tarjeta">
+        <h2 id="titular-especifico" class="titular-articulo">
+          El combate de los selectores
+        </h2>
+        
+        <!-- 
+          El <p> es de BLOQUE. 
+          Los <strong> y <em> son EN LÍNEA: no rompen el párrafo, fluyen junto al texto.
+        -->
+        <p>
+          Este texto demuestra el <strong>flujo normal</strong> en línea. 
+          Podemos incluir <em>énfasis</em> sin que se generen saltos de línea.
+          A continuación, una imagen (que también es un elemento en línea reemplazado):
+        </p>
+
+        <!-- Elemento en línea, con atributo alt obligatorio (Accesibilidad WCAG) -->
+        <img src="https://via.placeholder.com/150" alt="Ejemplo de caja gris de 150x150 píxeles" width="150" height="150">
+      </article>
+
+      <!-- 
+        EXCEPCIÓN HTML5: 
+        Un elemento en LÍNEA (<a>) envolviendo un elemento en BLOQUE (<article>).
+        Es totalmente válido y semántico mientras no haya botones o enlaces dentro.
+      -->
+      <a href="#link-demostrativo" class="enlace-tarjeta">
+        <article class="tarjeta tarjeta-clickeable">
+          <h3>Tarjeta interactiva entera</h3>
+          <p>Toda esta caja de bloque es un enlace gracias a la excepción de la etiqueta "a" en HTML5.</p>
+        </article>
+      </a>
+
+    </section>
+
+  </main>
+</body>
+</html>

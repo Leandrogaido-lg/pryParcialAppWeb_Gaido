@@ -1,0 +1,99 @@
+/* 
+  Definición de Variables CSS (Custom Properties) en la raíz.
+  Esto es una buena práctica para modularizar y evitar valores fijos repetidos.
+*/
+:root {
+  --color-base: #333333;
+  --color-etiqueta: #7f8c8d;
+  --color-clase: #3498db;
+  --color-id: #e74c3c;
+  --color-ganador: #2ecc71;
+  --espaciado: 20px;
+}
+
+/* Configuraciones generales (Bloque vs Línea visual) */
+body {
+  font-family: Arial, sans-serif;
+  color: var(--color-base);
+  margin: var(--espaciado);
+}
+
+.tarjeta {
+  border: 2px solid #ccc;
+  padding: var(--espaciado);
+  margin-bottom: var(--espaciado);
+  /* <article> es bloque por defecto, toma el 100% del ancho disponible */
+}
+
+/* Excepción del <a>: le quitamos el subrayado feo y lo mostramos como bloque 
+   para que respete bien el modelo de caja del article que tiene adentro */
+.enlace-tarjeta {
+  text-decoration: none;
+  color: inherit;
+  display: block; 
+}
+
+
+/* =========================================================================
+   BATALLA DE ESPECIFICIDAD SOBRE EL MISMO ELEMENTO
+   Vamos a apuntar al <h2> del primer <article>.
+   ========================================================================= */
+
+/* 
+  1. SELECTOR DE ETIQUETA (TIPO)
+  Especificidad: (0, 0, 0, 1) = 0 ID, 0 Clases, 1 Tipo (h2)
+  Es el más débil.
+*/
+h2 {
+  color: var(--color-etiqueta); 
+  font-size: 1.2rem;
+}
+
+/* 
+  2. SELECTOR DE CLASE
+  Especificidad: (0, 0, 1, 0) = 0 ID, 1 Clase (.titular-articulo), 0 Tipos
+  Vence al h2, pero pierde con todo lo de abajo.
+*/
+.titular-articulo {
+  color: var(--color-clase);
+  font-size: 1.5rem;
+}
+
+/* 
+  3. SELECTOR COMPUESTO (Etiqueta + Clase)
+  Especificidad: (0, 0, 1, 1) = 0 ID, 1 Clase (.titular-articulo), 1 Tipo (h2)
+  Gana a la clase sola porque desempata en la columna de etiquetas.
+*/
+h2.titular-articulo {
+  color: purple;
+  font-size: 1.8rem;
+}
+
+/* 
+  4. SELECTOR DE ID
+  Especificidad: (0, 1, 0, 0) = 1 ID (#titular-especifico), 0 Clases, 0 Tipos
+  Al tener un 1 en la columna de los ID, aplasta inmediatamente a las clases y etiquetas.
+*/
+#titular-especifico {
+  color: var(--color-id);
+  font-size: 2rem;
+}
+
+/* 
+  5. SELECTOR DE ID + CLASE (EL GANADOR ABSOLUTO)
+  Especificidad: (0, 1, 1, 0) = 1 ID, 1 Clase, 0 Tipos
+  Este prevalece por sobre todos los demás. 
+*/
+#titular-especifico.titular-articulo {
+  color: var(--color-ganador);
+  font-size: 2.2rem;
+}
+
+/* 
+  MALA PRÁCTICA (Comentada para que no arruine el código):
+  Usar !important destruye el flujo lógico de la especificidad (1,0,0,0,0).
+  
+  #titular-especifico {
+    color: red !important; 
+  }
+*/
