@@ -14,7 +14,6 @@
   --espaciado: 20px;
 }
 
-/* selectores de TIPO (nombre de la etiqueta) */
 html,
 body {
   margin: 0;
@@ -175,8 +174,7 @@ h4.lab-compuesto {
 #lab-final.lab-ganador {
   color: var(--color-ganador);
 }
-
-/* BATALLA SOBRE EL MISMO ELEMENTO 
+/* batalla sobre el mismo elemento
   Todas apuntan a <h2 id="titular-especifico" class="titular-articulo">*/
 
 /* 1. TIPO (0,0,0,1) */
