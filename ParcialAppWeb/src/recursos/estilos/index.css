@@ -1,99 +1,217 @@
-/* 
-  Definición de Variables CSS (Custom Properties) en la raíz.
-  Esto es una buena práctica para modularizar y evitar valores fijos repetidos.
-*/
+
+* {
+  box-sizing: border-box;
+}
+
 :root {
-  --color-base: #333333;
+  --color-base: #2c3e50;
   --color-etiqueta: #7f8c8d;
   --color-clase: #3498db;
   --color-id: #e74c3c;
-  --color-ganador: #2ecc71;
+  --color-ganador: #27ae60;
+  --color-bloque: #d6eaff;
+  --color-linea: #ffe066;
   --espaciado: 20px;
 }
 
-/* Configuraciones generales (Bloque vs Línea visual) */
+/* selectores de TIPO (nombre de la etiqueta) */
+html,
 body {
-  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+html {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 18px; 
+}
+
+body {
+  background-color: #f4f6f8;
   color: var(--color-base);
-  margin: var(--espaciado);
+}
+
+header {
+  background-color: var(--color-base);
+}
+
+a {
+  color: var(--color-base);
+  text-decoration: none;
+}
+
+.encabezado-principal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px var(--espaciado);
+}
+
+.encabezado-principal .marca {
+  margin: 0;
+  color: #ffffff;
+}
+
+.vinculos a {
+  color: #ffffff;
+  margin-left: var(--espaciado);
+}
+
+.vinculos a:hover {
+  text-decoration: underline;
+}
+
+.contenido-principal {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--espaciado);
+}
+
+/*
+  Los títulos de sección usan clase (0,0,1,0): le ganan a la regla
+  global "h2" (0,0,0,1) de más abajo, así no se pintan como el combate.
+*/
+.titulo-seccion {
+  font-size: 1.3rem;
+  color: var(--color-base);
+  margin: calc(var(--espaciado) * 2) 0 var(--espaciado);
 }
 
 .tarjeta {
+  background-color: #ffffff;
   border: 2px solid #ccc;
   padding: var(--espaciado);
   margin-bottom: var(--espaciado);
-  /* <article> es bloque por defecto, toma el 100% del ancho disponible */
 }
 
-/* Excepción del <a>: le quitamos el subrayado feo y lo mostramos como bloque 
-   para que respete bien el modelo de caja del article que tiene adentro */
+.tarjeta h3 {
+  margin-top: 0;
+}
+
+
+/* <p> es de bloque: el fondo azul llega de punta a punta */
+.tarjeta p {
+  background-color: var(--color-bloque);
+}
+
+/* <strong> y <em> son en línea: el fondo solo cubre su contenido */
+.tarjeta strong,
+.tarjeta em {
+  background-color: var(--color-linea);
+}
+
+/* <span> es en línea por defecto: se queda junto al texto */
+.caja-linea {
+  background-color: var(--color-linea);
+  border: 1px solid #c9a800;
+}
+
+/* mismo span con display: block -> pasa a comportarse como bloque */
+.caja-bloque {
+  display: block;
+  background-color: var(--color-linea);
+  border: 1px solid #c9a800;
+}
+
+.imagen-chica {
+  border: 2px solid var(--color-clase);
+}
+
+
 .enlace-tarjeta {
-  text-decoration: none;
-  color: inherit;
-  display: block; 
+  display: block;
+}
+
+.enlace-tarjeta:hover .tarjeta {
+  border-color: var(--color-clase);
+}
+
+.enlace-tarjeta:focus-visible {
+  outline: 3px solid var(--color-clase);
+  outline-offset: 4px;
 }
 
 
-/* =========================================================================
-   BATALLA DE ESPECIFICIDAD SOBRE EL MISMO ELEMENTO
-   Vamos a apuntar al <h2> del primer <article>.
-   ========================================================================= */
+.fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--espaciado);
+  border-bottom: 1px solid #eee;
+}
 
-/* 
-  1. SELECTOR DE ETIQUETA (TIPO)
-  Especificidad: (0, 0, 0, 1) = 0 ID, 0 Clases, 1 Tipo (h2)
-  Es el más débil.
-*/
+.fila code {
+  font-size: 0.75rem;
+  color: var(--color-etiqueta);
+}
+
+/* 1. TIPO (0,0,0,1): el más débil */
+h4 {
+  color: var(--color-etiqueta);
+  margin: 10px 0;
+}
+
+/* 2. CLASE (0,0,1,0): le gana al tipo */
+.lab-clase {
+  color: var(--color-clase);
+}
+
+/* 3. COMPUESTO (0,0,1,1): desempata en la columna de tipos */
+h4.lab-compuesto {
+  color: purple;
+}
+
+/* 4. ID (0,1,0,0): aplasta a clases y tipos */
+#lab-id {
+  color: var(--color-id);
+}
+
+/* 5. ID + CLASE (0,1,1,0): gana sobre el mismo elemento */
+#lab-final {
+  color: var(--color-id);
+}
+
+#lab-final.lab-ganador {
+  color: var(--color-ganador);
+}
+
+/* BATALLA SOBRE EL MISMO ELEMENTO 
+  Todas apuntan a <h2 id="titular-especifico" class="titular-articulo">*/
+
+/* 1. TIPO (0,0,0,1) */
 h2 {
-  color: var(--color-etiqueta); 
+  color: var(--color-etiqueta);
   font-size: 1.2rem;
 }
 
-/* 
-  2. SELECTOR DE CLASE
-  Especificidad: (0, 0, 1, 0) = 0 ID, 1 Clase (.titular-articulo), 0 Tipos
-  Vence al h2, pero pierde con todo lo de abajo.
-*/
+/* 2. CLASE (0,0,1,0): vence al h2 */
 .titular-articulo {
   color: var(--color-clase);
   font-size: 1.5rem;
 }
 
-/* 
-  3. SELECTOR COMPUESTO (Etiqueta + Clase)
-  Especificidad: (0, 0, 1, 1) = 0 ID, 1 Clase (.titular-articulo), 1 Tipo (h2)
-  Gana a la clase sola porque desempata en la columna de etiquetas.
-*/
+/* 3. COMPUESTO (0,0,1,1): gana a la clase sola */
 h2.titular-articulo {
   color: purple;
   font-size: 1.8rem;
 }
 
-/* 
-  4. SELECTOR DE ID
-  Especificidad: (0, 1, 0, 0) = 1 ID (#titular-especifico), 0 Clases, 0 Tipos
-  Al tener un 1 en la columna de los ID, aplasta inmediatamente a las clases y etiquetas.
-*/
+/* 4. ID (0,1,0,0): gana a clases y tipos */
 #titular-especifico {
   color: var(--color-id);
   font-size: 2rem;
 }
 
-/* 
-  5. SELECTOR DE ID + CLASE (EL GANADOR ABSOLUTO)
-  Especificidad: (0, 1, 1, 0) = 1 ID, 1 Clase, 0 Tipos
-  Este prevalece por sobre todos los demás. 
-*/
+/* 5. ID + CLASE (0,1,1,0): ganador total */
 #titular-especifico.titular-articulo {
   color: var(--color-ganador);
   font-size: 2.2rem;
 }
 
-/* 
-  MALA PRÁCTICA (Comentada para que no arruine el código):
-  Usar !important destruye el flujo lógico de la especificidad (1,0,0,0,0).
-  
-  #titular-especifico {
-    color: red !important; 
-  }
-*/
+
+.pie-principal {
+  padding: 2px var(--espaciado);
+  background-color: var(--color-base);
+  color: #ffffff;
+}

@@ -1,61 +1,125 @@
 <!DOCTYPE html>
 <html lang="es-AR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flujo HTML y Especificidad CSS - Parcial</title>
-  <link rel="stylesheet" href="estilos.css">
-</head>
-<body>
 
-  <!-- Elemento de bloque semántico de nivel superior -->
-  <main class="contenedor-principal">
-    
-    <header class="cabecera">
-      <!-- Ejemplo de accesibilidad: aria-label para dar contexto extra si fuera necesario -->
-      <h1 aria-label="Tema del parcial: Especificidad">Demostración de HTML y CSS</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flujo HTML y Especificidad CSS - Parcial</title>
+    <link rel="stylesheet" href="./recursos/estilos/index.css">
+</head>
+
+<body>
+    <header class="encabezado-principal">
+        <p class="marca">Parcial AW1</p>
+        <nav class="vinculos">
+            <a href="#flujo">Bloque y línea</a>
+            <a href="#excepcion">Excepción del a</a>
+            <a href="#especificidad">Especificidad</a>
+        </nav>
     </header>
 
-    <section class="ejemplos-flujo">
-      
-      <!-- 
-        El <article> y el <h2> son elementos en BLOQUE. 
-        Este <h2> es el que usaremos para que 5 selectores CSS peleen por él.
-        Tiene etiqueta (h2), clase (.titular-articulo) e ID (#titular-especifico).
-      -->
-      <article class="tarjeta">
-        <h2 id="titular-especifico" class="titular-articulo">
-          El combate de los selectores
-        </h2>
-        
-        <!-- 
-          El <p> es de BLOQUE. 
-          Los <strong> y <em> son EN LÍNEA: no rompen el párrafo, fluyen junto al texto.
-        -->
-        <p>
-          Este texto demuestra el <strong>flujo normal</strong> en línea. 
-          Podemos incluir <em>énfasis</em> sin que se generen saltos de línea.
-          A continuación, una imagen (que también es un elemento en línea reemplazado):
-        </p>
+    <main class="contenido-principal">
+        <h1>Flujo HTML y especificidad CSS</h1>
 
-        <!-- Elemento en línea, con atributo alt obligatorio (Accesibilidad WCAG) -->
-        <img src="https://via.placeholder.com/150" alt="Ejemplo de caja gris de 150x150 píxeles" width="150" height="150">
-      </article>
+        <!--BLOQUE VS LÍNEA  -->
+        <section id="flujo">
+            <h2 class="titulo-seccion">1. Bloque vs. línea</h2>
 
-      <!-- 
-        EXCEPCIÓN HTML5: 
-        Un elemento en LÍNEA (<a>) envolviendo un elemento en BLOQUE (<article>).
-        Es totalmente válido y semántico mientras no haya botones o enlaces dentro.
-      -->
-      <a href="#link-demostrativo" class="enlace-tarjeta">
-        <article class="tarjeta tarjeta-clickeable">
-          <h3>Tarjeta interactiva entera</h3>
-          <p>Toda esta caja de bloque es un enlace gracias a la excepción de la etiqueta "a" en HTML5.</p>
-        </article>
-      </a>
+            <!--
+                BLOQUE: <article>, <h3>, <p> -> ocupan todo el ancho y fuerzan salto de línea.
+                EN LÍNEA: <strong>, <em>, <span> -> miden lo que mide su contenido.
+                En pantalla: azul = bloque, amarillo = línea.
+            -->
+            <article class="tarjeta">
+                <h3>Lo que ocupa cada elemento</h3>
+                <p>
+                    Un párrafo es de bloque y ocupa todo el ancho. Dentro puedo
+                    poner <strong>texto importante</strong> o <em>énfasis</em>
+                    sin que se corte la línea: el fondo amarillo solo cubre
+                    el contenido.
+                </p>
+                <p>
+                    Tres span en línea:
+                    <span class="caja-linea">uno</span>
+                    <span class="caja-linea">dos</span>
+                    <span class="caja-linea">tres</span>
+                </p>
+                <p>
+                    Los mismos span con <code>display: block</code>:
+                    <span class="caja-bloque">uno</span>
+                    <span class="caja-bloque">dos</span>
+                    <span class="caja-bloque">tres</span>
+                </p>
+                <!-- <img> es un elemento en línea reemplazado, con alt obligatorio (WCAG) -->
+                <img class="imagen-chica" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' fill='%2395a5a6'/%3E%3C/svg%3E"
+                    alt="Cuadrado gris de 80 por 80 píxeles" width="80" height="80">
+                <img class="imagen-chica" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' fill='%2395a5a6'/%3E%3C/svg%3E"
+                    alt="Otro cuadrado gris de 80 por 80 píxeles" width="80" height="80">
+            </article>
+        </section>
 
-    </section>
+        <!--EXCEPCIÓN: <a> -->
+        <section id="excepcion">
+            <h2 class="titulo-seccion">2. La excepción del a </h2>
 
-  </main>
+            <!--
+                <a> es EN LÍNEA pero en HTML5 puede envolver bloques (<article>, <h3>, <p>).
+                Es válido mientras no haya botones ni otros enlaces adentro.
+            -->
+            <a href="#excepcion" class="enlace-tarjeta">
+                <article class="tarjeta">
+                    <h3>Tarjeta interactiva entera</h3>
+                    <p>Toda esta caja de bloque es un enlace gracias a la excepción de HTML5.</p>
+                </article>
+            </a>
+        </section>
+
+        <!-- ESPECIFICIDAD -->
+        <section id="especificidad">
+            <h2 class="titulo-seccion">3. Especificidad</h2>
+
+            <article class="tarjeta">
+                <h3>Escalera de especificidad</h3>
+
+                <div class="fila">
+                    <h4>Texto de ejemplo</h4>
+                    <code>h4 = (0,0,0,1)</code>
+                </div>
+                <div class="fila">
+                    <h4 class="lab-clase">Texto de ejemplo</h4>
+                    <code>.lab-clase = (0,0,1,0) le gana al tipo</code>
+                </div>
+                <div class="fila">
+                    <h4 class="lab-clase lab-compuesto">Texto de ejemplo</h4>
+                    <code>h4.lab-compuesto = (0,0,1,1) le gana a la clase sola</code>
+                </div>
+                <div class="fila">
+                    <h4 id="lab-id" class="lab-clase lab-compuesto">Texto de ejemplo</h4>
+                    <code>#lab-id = (0,1,0,0) le gana a las clases</code>
+                </div>
+                <div class="fila">
+                    <h4 id="lab-final" class="lab-clase lab-compuesto lab-ganador">Texto de ejemplo</h4>
+                    <code>#lab-final.lab-ganador = (0,1,1,0) la más fuerte</code>
+                </div>
+            </article>
+
+            <!--
+                COMBATE: un solo <h2> con etiqueta, clase e ID.
+                Las 5 reglas apuntan a él y solo una se ve.
+            -->
+            <article class="tarjeta">
+                <h2 id="titular-especifico" class="titular-articulo">El combate de los selectores</h2>
+                <p>
+                    Este título recibe 5 reglas a la vez. Gana
+                    <code>#titular-especifico.titular-articulo</code> (0,1,1,0).
+                </p>
+            </article>
+        </section>
+    </main>
+
+    <footer class="pie-principal">
+        <p>Aplicaciones Web 1 - Parcial 1</p>
+    </footer>
 </body>
+
 </html>
